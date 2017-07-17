@@ -25,7 +25,9 @@ def get_all_the_emails_of_val_doise_townhalls
 	end
 end
 
-############## Sauvegarde dans un spreadsheet Google ##########
+emails_list = get_all_the_emails_of_val_doise_townhalls
+
+############## Sauvegarde dans un spreadsheet Google #############
 
 require "google_drive"
 
@@ -34,10 +36,18 @@ session = GoogleDrive::Session.from_config("config.json")
 #On lie un spreadsheet Google, et on stocke l'objet dans la variable ws
 ws = session.spreadsheet_by_key("1T7_XpqeIi_h1SRNvqp6HRQV2b_3Xa0vSE2qaDh8dQPk").worksheets[0]
 
-emails_list = get_all_the_emails_of_val_doise_townhalls.to_a.reverse.to_h
+emails_list_reversed = get_all_the_emails_of_val_doise_townhalls.to_a.reverse.to_h
 
 #On ajoute dans le fichier ligne par ligne
-emails_list.each do |town, town_email|
+emails_list_reversed.each do |town, town_email|
 	ws.insert_rows(2, [[town, town_email]])
 	ws.save
+end
+
+############# Pour exporter le résultat dans un fichier JSON : #############
+
+require 'json'
+
+File.open("emails_val_doise.json","w") do |f|
+  f.write(emails_list.to_json)
 end
