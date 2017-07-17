@@ -42,6 +42,15 @@ ws = session.spreadsheet_by_key("1T7_XpqeIi_h1SRNvqp6HRQV2b_3Xa0vSE2qaDh8dQPk").
 # 	end
 # end
 
-get_all_the_emails_of_val_doise_townhalls.each do |town, town_email|
-	puts "ville : #{town} --- email : #{town_email}"
+emails_list = get_all_the_emails_of_val_doise_townhalls.to_a.reverse.to_h
+
+#ws.insert_rows(2, [["test 1", "test 2"]])
+
+
+emails_list.each do |town, town_email|
+	#puts "ville : #{town} --- email : #{town_email}"
+	ws.insert_rows(2, [[town, town_email]])
+	ws.save
 end
+
+#emails_list.find_index(town_email)
